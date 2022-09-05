@@ -50,14 +50,14 @@ function SideBar() {
     <aside
       className={` ${
         open ? 'w-[291px]' : 'w-[94px]'
-      } flex fixed left-0 bg-base h-screen duration-300 ease-in-out 
+      } flex bg-base h-screen duration-500 transition-all fixed left-0
       shadow-[0_4px_4px_rgba(16,24,40,0.1)]
       `}
       aria-label="Sidebar"
     >
       <nav>
         <ul
-          className="mt-10"
+          className="mt-16"
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
@@ -65,19 +65,15 @@ function SideBar() {
             <Link to={menu.path}>
               <li
                 key={menu.title}
-                className={`flex items-center mb-4 ml-2 p-4 rounded-lg hover:bg-light-blue ${
+                className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${
                   router.pathname === menu.path && 'bg-light-blue'
                 }`}
               >
-                <img
-                  src={menu.icon}
-                  alt="Home"
-                  className="w-[23.33px] h-[25.67px] ml-2"
-                />
+                <img src={menu.icon} alt="Home" className="w-7 h-7" />
                 <span
                   className={`${
                     !open && 'scale-0 left-0 w-0'
-                  } ml-2  duration-300 whitespace-nowrap origin-left ${
+                  } ml-3  duration-300 whitespace-nowrap origin-left ${
                     menu.color || 'text-primary-black'
                   }`}
                 >
