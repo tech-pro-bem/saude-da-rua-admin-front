@@ -3,12 +3,12 @@ import homepageImage from '../assets/homepage.png';
 
 function Home() {
   return (
-    <main className="flex">
+    <div className="flex">
       {/* TODO: Remover a div abaixo e adicionar o componente Menu */}
       <div className="w-24 border-r-2">
         Menu
       </div>
-      <section className="pt-16 pr-48 pb-56 pl-10">
+      <main className="pt-16 pr-[182px] pb-56 pl-10">
         <h1 className="font-semibold text-3xl text-gray-900 leading-[3rem]">
           Olá, [nome]
         </h1>
@@ -26,8 +26,8 @@ function Home() {
           />
           <figcaption className="font-normal leading-6 text-gray-900">Equipe Saúde da Rua em ação.</figcaption>
         </figure>
-      </section>
-    </main>
+      </main>
+    </div>
 
   );
 }
