@@ -4,6 +4,7 @@ import eyeClosedIcon from '../assets/eye-off.svg';
 import eyeOpenIcon from '../assets/eye-on.svg';
 
 function Login() {
+  /* Password visibility state */
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   /* Login error state */
