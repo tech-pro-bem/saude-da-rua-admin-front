@@ -31,16 +31,15 @@ function Login() {
           <label htmlFor="email" className="flex flex-col mb-6">
             <span className="text-primary-black mb-2">E-mail</span>
             <input
-              type="text"
+              type="email"
               id="email"
               name="email"
+              required
               placeholder="Digite o e-mail cadastrado"
               className={`px-6 py-3 bg-transparent rounded-lg text-primary-black placeholder:text-medium-grey
                 outline outline-1 ${hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'}`}
               // eslint-disable-next-line react/jsx-props-no-spreading
-              {...register('email', {
-                required: true,
-              })}
+              {...register('email')}
             />
           </label>
           {/* Password Form Control */}
@@ -51,15 +50,14 @@ function Login() {
                 type={isPasswordVisible ? 'text' : 'password'}
                 id="password"
                 name="password"
+                required
                 placeholder="Digite a sua senha"
                 className={`w-full px-6 py-3 pr-14 bg-transparent rounded-lg text-primary-black placeholder:text-medium-grey
                 outline outline-1 ${hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'}`}
                 // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('password', {
-                  required: true,
-                })}
+                {...register('password')}
               />
-              {/* Eye Mask Button */}
+              {/* Eye-Shaped Mask Button */}
               <div className="pl-2 absolute inset-y-0 right-4 h-full flex items-center">
                 <button
                   type="button"
