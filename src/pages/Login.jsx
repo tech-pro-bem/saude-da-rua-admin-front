@@ -6,7 +6,7 @@ import eyeOpenIcon from '../assets/eye-on.svg';
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  /* Login error message */
+  /* Login error state */
   const [hasLoginErrorOccurred, setHasLoginErrorOccurred] = useState(false);
 
   /* useForm setup */
@@ -16,6 +16,7 @@ function Login() {
     handleSubmit,
   } = useForm({ defaultValues: formInitialState });
 
+  /* Submit */
   function onSubmit(data) {
     alert(JSON.stringify(data));
     setHasLoginErrorOccurred(true);
@@ -55,18 +56,7 @@ function Login() {
                 outline outline-1 ${hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'}`}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('password', {
-                  required: {
-                    value: true,
-                    message: 'O campo de senha é obrigatório',
-                  },
-                  minLength: {
-                    value: 5,
-                    message: 'A senha deve ter pelo menos 5 caracteres',
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: 'A senha não deve exceder 30 caracteres',
-                  },
+                  required: true,
                 })}
               />
               {/* Eye Mask Button */}
