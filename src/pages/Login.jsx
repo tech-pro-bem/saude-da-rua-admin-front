@@ -11,6 +11,8 @@ function Login() {
   const [hasLoginErrorOccurred, setHasLoginErrorOccurred] = useState(false);
 
   const [userValues, setUserValues] = useState({ email: '', password: '' });
+  const [mustSaveUser, setMustSaveUser] = useState(false);
+
   const {
     register,
     handleSubmit,
