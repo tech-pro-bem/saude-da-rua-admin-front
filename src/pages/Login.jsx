@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import eyeClosedIcon from '../assets/eye-off.svg';
 import eyeOpenIcon from '../assets/eye-on.svg';
 import { saveLocalStorage, getLocalStorage } from '../utils/localStorage';
+import { saveSessionStorage } from '../utils/sessionStorage';
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -37,7 +38,7 @@ function Login() {
       data,
     }).then(
       (response) => {
-        saveLocalStorage('token', response.data.token);
+        saveSessionStorage('token', response.data.token);
         if (mustSaveUser) {
           saveLocalStorage('user', data);
         }
