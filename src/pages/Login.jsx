@@ -30,8 +30,23 @@ function Login() {
 
   const navigate = useNavigate();
   function onSubmit(data) {
-    alert(JSON.stringify(data));
-    setHasLoginErrorOccurred(true);
+    setHasLoginErrorOccurred(false);
+    axios({
+      method: 'post',
+      url: 'https://36b32v1d09.execute-api.sa-east-1.amazonaws.com/login',
+      data,
+    }).then(
+      (response) => {
+        saveLocalStorage('token', response.data.token);
+        if (mustSaveUser) {
+          saveLocalStorage('user', data);
+        }
+        navigate('/home');
+      },
+    ).catch(() => {
+      setHasLoginErrorOccurred(true);
+      reset({ email: '', password: '' });
+    });
   }
 
   return (
