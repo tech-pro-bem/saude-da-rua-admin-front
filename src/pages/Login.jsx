@@ -19,6 +19,15 @@ function Login() {
     reset,
   } = useForm({ defaultValues: userValues });
 
+  useEffect(() => {
+    const value = getLocalStorage('user');
+    if (value) {
+      setMustSaveUser(true);
+      setUserValues(value);
+      reset(value);
+    }
+  }, [reset]);
+
   function onSubmit(data) {
     alert(JSON.stringify(data));
     setHasLoginErrorOccurred(true);
