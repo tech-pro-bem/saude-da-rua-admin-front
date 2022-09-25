@@ -28,6 +28,7 @@ function Login() {
     }
   }, [reset]);
 
+  const navigate = useNavigate();
   function onSubmit(data) {
     alert(JSON.stringify(data));
     setHasLoginErrorOccurred(true);
