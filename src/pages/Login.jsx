@@ -103,7 +103,14 @@ function Login() {
             )}
           </label>
           <div className="flex items-center gap-2 mb-[60px]">
-            <input type="checkbox" name="remember" id="remember" className="scale-125" />
+            <input
+              type="checkbox"
+              name="remember"
+              id="remember"
+              className="scale-125"
+              checked={mustSaveUser}
+              onChange={() => setMustSaveUser(!mustSaveUser)}
+            />
             <span className="mt-1">Lembrar de mim no próximo acesso</span>
           </div>
           <div className="flex justify-center">
