@@ -9,3 +9,21 @@
     font-family: "Poppins", sans-serif;
   }
 }
+
+@layer components {
+  .btn {
+    @apply rounded-full text-white font-bold disabled:bg-light-grey disabled:text-medium-grey transition-colors;
+  }
+  .primary-btn{
+    @apply bg-primary-black hover:bg-primary-blue;
+  }
+  .secondary-btn{
+    @apply bg-primary-blue hover:bg-dark-blue;
+  }
+}
+
+@layer utilities {
+  .btn-small {
+    @apply py-3 px-20 text-base leading-[auto];
+  }
+}
