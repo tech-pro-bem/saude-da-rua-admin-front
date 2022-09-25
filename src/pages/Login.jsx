@@ -45,7 +45,6 @@ function Login() {
       },
     ).catch(() => {
       setHasLoginErrorOccurred(true);
-      reset({ email: '', password: '' });
     });
   }
 
