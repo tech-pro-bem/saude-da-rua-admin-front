@@ -10,7 +10,7 @@ function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [hasLoginErrorOccurred, setHasLoginErrorOccurred] = useState(false);
 
-  const formInitialState = { email: '', password: '' };
+  const [userValues, setUserValues] = useState({ email: '', password: '' });
   const {
     register,
     handleSubmit,
