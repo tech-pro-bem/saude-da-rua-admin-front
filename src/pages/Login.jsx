@@ -14,7 +14,7 @@ function Login() {
   const {
     register,
     handleSubmit,
-  } = useForm({ defaultValues: formInitialState });
+    reset,
 
   function onSubmit(data) {
     alert(JSON.stringify(data));
