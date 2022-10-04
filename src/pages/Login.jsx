@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +5,7 @@ import eyeClosedIcon from '../assets/eye-off.svg';
 import eyeOpenIcon from '../assets/eye-on.svg';
 import { saveLocalStorage, getLocalStorage } from '../utils/localStorage';
 import { saveSessionStorage } from '../utils/sessionStorage';
+import axiosInstance from '../service/axiosInstance';
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -32,11 +32,7 @@ function Login() {
   const navigate = useNavigate();
   function onSubmit(data) {
     setHasLoginErrorOccurred(false);
-    axios({
-      method: 'post',
-      url: 'https://36b32v1d09.execute-api.sa-east-1.amazonaws.com/login',
-      data,
-    }).then(
+    axiosInstance.post('login', data).then(
       (response) => {
         saveSessionStorage('token', response.data.token);
         if (mustSaveUser) {
