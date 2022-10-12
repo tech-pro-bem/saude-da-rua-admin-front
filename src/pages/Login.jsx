@@ -1,21 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import eyeClosedIcon from '../assets/eye-off.svg';
 import eyeOpenIcon from '../assets/eye-on.svg';
+import { saveLocalStorage, getLocalStorage } from '../utils/localStorage';
+import { saveSessionStorage } from '../utils/sessionStorage';
+import axiosInstance from '../service/axiosInstance';
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [hasLoginErrorOccurred, setHasLoginErrorOccurred] = useState(false);
 
-  const formInitialState = { email: '', password: '' };
+  const [userValues, setUserValues] = useState({ email: '', password: '' });
+  const [mustSaveUser, setMustSaveUser] = useState(false);
+
   const {
     register,
     handleSubmit,
-  } = useForm({ defaultValues: formInitialState });
+    reset,
+  } = useForm({ defaultValues: userValues });
 
+  useEffect(() => {
+    const value = getLocalStorage('user');
+    if (value) {
+      setMustSaveUser(true);
+      setUserValues(value);
+      reset(value);
+    }
+  }, [reset]);
+
+  const navigate = useNavigate();
   function onSubmit(data) {
-    alert(JSON.stringify(data));
-    setHasLoginErrorOccurred(true);
+    setHasLoginErrorOccurred(false);
+    axiosInstance.post('login', data).then(
+      (response) => {
+        saveSessionStorage('token', response.data.token);
+        if (mustSaveUser) {
+          saveLocalStorage('user', data);
+        }
+        navigate('/home');
+      },
+    ).catch(() => {
+      setHasLoginErrorOccurred(true);
+    });
   }
 
   return (
@@ -72,7 +99,14 @@ function Login() {
             )}
           </label>
           <div className="flex items-center gap-2 mb-[60px]">
-            <input type="checkbox" name="remember" id="remember" className="scale-125" />
+            <input
+              type="checkbox"
+              name="remember"
+              id="remember"
+              className="scale-125"
+              checked={mustSaveUser}
+              onChange={() => setMustSaveUser(!mustSaveUser)}
+            />
             <span className="mt-1">Lembrar de mim no próximo acesso</span>
           </div>
           <div className="flex justify-center">
