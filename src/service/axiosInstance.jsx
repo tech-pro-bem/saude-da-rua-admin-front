@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use((req) => {
     return req;
   }
 
-  return console.log('token não informado no sessionStorage');
+  throw new Error('missing token in sessionStorage')
 });
 
 export default axiosInstance;
