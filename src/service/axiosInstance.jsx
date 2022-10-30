@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { getSessionStorage } from '../utils/sessionStorage';
-import { UNAUTHENTICATED_ROUTES, BASE_URL } from '../constants/constants';
+import UNAUTHENTICATED_ROUTES from '../constants/constants';
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 axiosInstance.interceptors.request.use((req) => {
@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use((req) => {
   }
 
   if (token) {
-    const { headers } = req
+    const { headers } = req;
     req.headers = {
       ...headers,
       Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use((req) => {
     return req;
   }
 
-  throw new Error('missing token in sessionStorage')
+  throw new Error('missing token in sessionStorage');
 });
 
 export default axiosInstance;
