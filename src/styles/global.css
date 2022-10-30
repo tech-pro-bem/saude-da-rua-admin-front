@@ -6,7 +6,7 @@
 
 @layer base {
   html {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 }
 
@@ -14,10 +14,10 @@
   .btn {
     @apply rounded-full text-white font-bold disabled:bg-light-grey disabled:text-medium-grey transition-colors;
   }
-  .primary-btn{
+  .primary-btn {
     @apply bg-primary-black hover:bg-primary-blue;
   }
-  .secondary-btn{
+  .secondary-btn {
     @apply bg-primary-blue hover:bg-dark-blue;
   }
 }
