@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axiosInstance from '../../service/axiosInstance';
 import homepageImage from '../../assets/homepage.png';
 
 function MainHome() {
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    axiosInstance.get('/get/admin/me').then((response) => {
+      setUserName(response.data.name);
+      console.log(response.data.name);
+    });
+  }, []);
+
   return (
     <main className="pt-16 pr-[182px] pb-56">
       <h1 className="font-semibold text-3xl text-gray-900 leading-[3rem]">
-        Olá, [nome]
+        {`Olá, ${userName}`}
       </h1>
       <p className="font-normal text-lg leading-[27px] text-gray-900  mb-12">
         Boas vindas! Este é o painel de gestão do site do Saúde da Rua.
