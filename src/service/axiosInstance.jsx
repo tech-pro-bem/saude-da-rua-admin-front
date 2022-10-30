@@ -16,7 +16,9 @@ axiosInstance.interceptors.request.use((req) => {
   }
 
   if (token) {
+    const { headers } = req
     req.headers = {
+      ...headers,
       Authorization: `Bearer ${token}`,
     };
     return req;
