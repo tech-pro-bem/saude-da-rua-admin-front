@@ -38,7 +38,7 @@ function Login() {
         if (mustSaveUser) {
           saveLocalStorage('user', data);
         }
-        navigate('/home');
+        navigate('/');
       },
     ).catch(() => {
       setHasLoginErrorOccurred(true);
