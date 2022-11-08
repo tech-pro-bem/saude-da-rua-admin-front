@@ -1,12 +1,13 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import File from '../../assets/file.svg';
 import Home from '../../assets/home.svg';
 import List from '../../assets/list.svg';
-import File from '../../assets/file.svg';
-import User from '../../assets/user.svg';
-import Settings from '../../assets/settings.svg';
 import Logout from '../../assets/logout.svg';
+import Settings from '../../assets/settings.svg';
+import User from '../../assets/user.svg';
 
 function SideBar() {
   const [open, setOpen] = useState(false);
@@ -21,10 +22,10 @@ function SideBar() {
     {
       name: 'Planilha de voluntários',
       icon: List,
-      path: '/planilha',
+      path: '/voluntarios',
     },
     {
-      name: ' Relatórios financeiros',
+      name: 'Relatórios financeiros',
       icon: File,
       path: '/relatorios',
     },
@@ -36,7 +37,7 @@ function SideBar() {
     {
       name: 'Configurações da conta',
       icon: Settings,
-      path: '/congifuracoes',
+      path: '/configuracoes',
     },
     {
       name: 'Sair',
@@ -51,7 +52,7 @@ function SideBar() {
       className={` ${
         open ? 'w-[291px]' : 'w-[94px]'
       } flex bg-base h-screen duration-500 transition-all fixed left-0
-      shadow-[0_4px_4px_rgba(16,24,40,0.1)]
+      shadow-[0_4px_4px_rgba(16,24,40,0.1)] z-[9999]
       `}
       aria-label="Sidebar"
     >
@@ -61,10 +62,9 @@ function SideBar() {
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
-          {Menus.map((menu) => (
-            <Link to={menu.path}>
+          {Menus.map((menu, index) => (
+            <Link to={menu.path} key={index}>
               <li
-                key={menu.title}
                 className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${
                   router.pathname === menu.path && 'bg-light-blue'
                 }`}
