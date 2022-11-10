@@ -18,14 +18,8 @@ function AuthenticatedLayout({ children }) {
     const token = getSessionStorage('token');
     const isToken = !!token;
 
-    if (!isToken) {
+    if (!isToken || (isToken && isTokenExpired(token))) {
       navigate('/login');
-    }
-
-    if (isToken) {
-      if (isTokenExpired(token)) {
-        navigate('/login');
-      }
     }
   }, []);
   return (
