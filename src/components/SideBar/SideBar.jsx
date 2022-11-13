@@ -7,6 +7,7 @@ import File from '../../assets/file.svg';
 import User from '../../assets/user.svg';
 import Settings from '../../assets/settings.svg';
 import Logout from '../../assets/logout.svg';
+import Pix from '../../assets/pix.svg';
 
 function SideBar() {
   const [open, setOpen] = useState(false);
@@ -27,6 +28,11 @@ function SideBar() {
       name: ' Relatórios financeiros',
       icon: File,
       path: '/relatorios',
+    },
+    {
+      name: ' Chave PIX',
+      icon: Pix,
+      path: '/chave-pix',
     },
     {
       name: 'Acessos',
