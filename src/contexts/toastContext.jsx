@@ -11,7 +11,7 @@ export function ToastProvider({ children }) {
   const [toastList, setToastList] = useState([]);
 
   const addToast = (toastType) => {
-    if (toastType !== 'success' && toastType !== 'error') return;
+    if (toastType !== 'success' && toastType !== 'error' && toastType !== 'warning') return;
 
     const toast = {
       id: toastList.length + 1,
