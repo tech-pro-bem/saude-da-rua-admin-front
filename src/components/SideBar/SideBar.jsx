@@ -52,7 +52,7 @@ function SideBar() {
       className={` ${
         open ? 'w-[291px]' : 'w-[94px]'
       } flex bg-base h-screen duration-500 transition-all fixed left-0
-      shadow-[0_4px_4px_rgba(16,24,40,0.1)] z-[9999]
+      shadow-[0_4px_4px_rgba(16,24,40,0.1)] z-[999px]
       `}
       aria-label="Sidebar"
     >
