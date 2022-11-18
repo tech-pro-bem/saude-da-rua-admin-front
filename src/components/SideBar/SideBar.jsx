@@ -71,7 +71,7 @@ function SideBar() {
             <Link to={menu.path}>
               <li
                 key={menu.title}
-                className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${
+                className={`flex items-center mb-9 ml-0.5 px-8 py-3 hover:bg-light-blue ${
                   router.pathname === menu.path && 'bg-light-blue'
                 }`}
               >
