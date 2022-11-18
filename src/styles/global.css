@@ -12,7 +12,7 @@
 
 @layer components {
   .btn {
-    @apply rounded-full text-white font-bold disabled:bg-light-grey disabled:text-medium-grey transition-colors;
+    @apply rounded-full text-white font-bold disabled:bg-light-grey disabled:text-medium-grey transition-colors disabled:hover:bg-light-grey disabled:cursor-not-allowed;
   }
   .primary-btn {
     @apply bg-primary-black hover:bg-primary-blue;
