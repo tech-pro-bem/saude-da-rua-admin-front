@@ -52,9 +52,9 @@ export default function Volunteers() {
       addToast('success');
     } catch (error) {
       addToast('error');
-      console.log(error);
+    } finally {
+      closeModal();
     }
-    closeModal();
   }
 
   return (
@@ -124,12 +124,13 @@ export default function Volunteers() {
       <Modal
         open={isModalOpen}
         setOpen={setIsModalOpen}
-        confirmationTitle="Confirmar ação"
         onCommit={handleDeleteVolunteer}
+        confirmationTitle="Confirmar ação"
         cancelButtonText="Cancelar"
-        text="Deseja mesmo realizar essa exclusão?"
         confirmationButtonText="Sim, excluir"
-      />
+      >
+        <span>Deseja mesmo realizar essa exclusão?</span>
+      </Modal>
       <ToastContainer />
     </AuthenticatedLayout>
   );
