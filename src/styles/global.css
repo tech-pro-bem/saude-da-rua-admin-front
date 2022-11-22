@@ -23,7 +23,31 @@
 }
 
 @layer utilities {
+  td{
+    @apply p-2 text-primary-black;
+  }
+
   .btn-small {
     @apply py-3 px-20 text-base leading-[auto];
+  }
+
+  .participation {
+    @apply w-[156px] text-center;
+  }
+
+  .name {
+    @apply w-[382px];
+  }
+
+  .occupation {
+    @apply w-[199px];
+  }
+
+  .availability {
+    @apply w-[201px];
+  }
+
+  .actions {
+    @apply w-[108px] text-center;
   }
 }
