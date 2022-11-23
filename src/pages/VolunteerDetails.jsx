@@ -2,7 +2,7 @@ import React from 'react';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
 import MainVolunterrDetails from '../components/MainVolunterrDetails';
 
-function VoluteerDetails() {
+function VolunteerDetails() {
   return (
     <AuthenticatedLayout>
       <MainVolunterrDetails />
@@ -10,4 +10,4 @@ function VoluteerDetails() {
   );
 }
 
-export default VoluteerDetails;
+export default VolunteerDetails;
