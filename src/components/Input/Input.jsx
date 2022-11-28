@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-
 import { Controller } from 'react-hook-form';
 
 export default function Input({
@@ -9,7 +9,7 @@ export default function Input({
   label,
   control,
   placeholder,
-  onChange = () => {},
+  onChange = () => { },
   rules = {},
 }) {
   return (

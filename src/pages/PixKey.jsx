@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-
+import Input from '../components/Input';
+import Modal from '../components/Modal';
+import ToastContainer from '../components/Toast/ToastContainer';
+import { useToast } from '../contexts/toastContext';
+import { PERMISSION_LEVEL } from '../data/pixKey';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
 import axiosInstance from '../service/axiosInstance';
-import { useToast } from '../contexts/toastContext';
-import ToastContainer from '../components/Toast/ToastContainer';
-import Input from '../components/Input/index';
-import Modal from '../components/Modal';
-import { PERMISSION_LEVEL } from '../data/pixKey';
 
 export default function PixUpdate() {
   const {

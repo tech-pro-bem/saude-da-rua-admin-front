@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
@@ -10,7 +11,7 @@ import Pix from '../../assets/pix.svg';
 import Settings from '../../assets/settings.svg';
 import User from '../../assets/user.svg';
 
-function SideBar() {
+function Sidebar() {
   const [open, setOpen] = useState(false);
   const router = useLocation();
 
@@ -55,10 +56,9 @@ function SideBar() {
 
   return (
     <aside
-      className={` ${
-        open ? 'w-[291px]' : 'w-[94px]'
-      } flex bg-base h-screen duration-500 transition-all fixed left-0
-      shadow-[0_4px_4px_rgba(16,24,40,0.1)] z-[999px]
+      className={`z-[999px] ${open ? 'w-[291px]' : 'w-[94px]'} 
+      flex bg-base h-screen duration-500 transition-all fixed left-0
+      shadow-[0_4px_4px_rgba(16,24,40,0.1)]
       `}
       aria-label="Sidebar"
     >
@@ -71,17 +71,14 @@ function SideBar() {
           {Menus.map((menu, index) => (
             <Link to={menu.path} key={index}>
               <li
-                className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${
-                  router.pathname === menu.path && 'bg-light-blue'
-                }`}
+                className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${router.pathname === menu.path && 'bg-light-blue'
+                  }`}
               >
                 <img src={menu.icon} alt="Home" className="w-7 h-7" />
                 <span
-                  className={`${
-                    !open && 'scale-0 left-0 w-0'
-                  } ml-3  duration-300 whitespace-nowrap origin-left ${
-                    menu.color || 'text-primary-black'
-                  }`}
+                  className={`${!open && 'scale-0 left-0 w-0'
+                    } ml-3  duration-300 whitespace-nowrap origin-left ${menu.color || 'text-primary-black'
+                    }`}
                 >
                   {menu.name}
                 </span>
@@ -94,4 +91,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default Sidebar;
