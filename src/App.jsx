@@ -4,6 +4,7 @@ import { ToastProvider } from './contexts/toastContext';
 import { VolunteersProvider } from './contexts/volunteersContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import PixKey from './pages/PixKey';
 import Volunteers from './pages/Volunteers';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/chave-pix" element={<PixKey />} />
           <Route
             path="/voluntarios"
             element={(

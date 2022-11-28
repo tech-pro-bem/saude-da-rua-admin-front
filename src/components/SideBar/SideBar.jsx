@@ -6,6 +6,7 @@ import File from '../../assets/file.svg';
 import Home from '../../assets/home.svg';
 import List from '../../assets/list.svg';
 import Logout from '../../assets/logout.svg';
+import Pix from '../../assets/pix.svg';
 import Settings from '../../assets/settings.svg';
 import User from '../../assets/user.svg';
 
@@ -28,6 +29,11 @@ function SideBar() {
       name: 'Relatórios financeiros',
       icon: File,
       path: '/relatorios',
+    },
+    {
+      name: 'Chave PIX',
+      icon: Pix,
+      path: '/chave-pix',
     },
     {
       name: 'Acessos',

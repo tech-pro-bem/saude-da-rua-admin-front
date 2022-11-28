@@ -1,10 +1,7 @@
 /* eslint-disable global-require */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -19,14 +16,14 @@ module.exports = {
         'light-grey': '#E9E9E9',
         'medium-grey': '#747476',
         'dark-grey': '#545454',
+        'light-silver': '#D9D9D9',
         /* alertas do sistema */
         success: '#5ABF87', // sucesso
         warning: '#FFB240', // aviso
         error: '#FF4848', // falha
       },
       fontFamily: {
-        // eslint-disable-next-line quote-props
-        'poppins': ['Poppins', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
       },
     },
   },
