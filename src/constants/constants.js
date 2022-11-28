@@ -1,3 +1,3 @@
-const UNAUTHENTICATED_ROUTES = ['login'];
+const UNAUTHENTICATED_ROUTES = ['/login'];
 
 export default UNAUTHENTICATED_ROUTES;
