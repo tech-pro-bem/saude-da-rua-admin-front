@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import eyeClosedIcon from '../assets/eye-off.svg';
 import eyeOpenIcon from '../assets/eye-on.svg';
-import { saveLocalStorage, getLocalStorage } from '../utils/localStorage';
-import { saveSessionStorage } from '../utils/sessionStorage';
 import axiosInstance from '../service/axiosInstance';
+import { getLocalStorage, saveLocalStorage } from '../utils/localStorage';
+import { saveSessionStorage } from '../utils/sessionStorage';
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -30,19 +30,21 @@ function Login() {
   }, [reset]);
 
   const navigate = useNavigate();
-  function onSubmit(data) {
+
+  async function onSubmit(loginData) {
     setHasLoginErrorOccurred(false);
-    axiosInstance.post('login', data).then(
-      (response) => {
-        saveSessionStorage('token', response.data.token);
-        if (mustSaveUser) {
-          saveLocalStorage('user', data);
-        }
-        navigate('/');
-      },
-    ).catch(() => {
+    try {
+      const { data } = await axiosInstance.post('/login', loginData);
+      saveSessionStorage('token', data.token);
+
+      if (mustSaveUser) {
+        saveLocalStorage('user', data);
+      }
+
+      navigate('/');
+    } catch (error) {
       setHasLoginErrorOccurred(true);
-    });
+    }
   }
 
   return (
