@@ -31,7 +31,7 @@ function SideBar() {
       path: '/relatorios',
     },
     {
-      name: ' Chave PIX',
+      name: 'Chave PIX',
       icon: Pix,
       path: '/chave-pix',
     },
