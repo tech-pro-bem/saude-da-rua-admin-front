@@ -4,6 +4,7 @@
 import React, {
   useCallback, useContext, useEffect, useState
 } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const ToastContext = React.createContext({});
 
@@ -14,7 +15,7 @@ export function ToastProvider({ children }) {
     if (toastType !== 'success' && toastType !== 'error' && toastType !== 'warning') return;
 
     const toast = {
-      id: toastList.length + 1,
+      id: uuidv4(),
       type: toastType
     };
     setToastList([...toastList, toast]);
