@@ -1,31 +1,30 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-no-bind */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ghostImg from '../assets/ghost.svg';
 import searchIcon from '../assets/search.svg';
 import Modal from '../components/Modal';
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination';
 import ToastContainer from '../components/Toast/ToastContainer';
-import VolunteerData from '../components/VolunteerData';
+import Volunteer from '../components/Volunteer';
 import { useToast } from '../contexts/toastContext';
-import { useVolunteers } from '../contexts/volunteersContext';
 import tableHeaders from '../data/tableHeaders';
+import weekDays from '../data/weekDays';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
+import axiosInstance from '../service/axiosInstance';
 
 export default function Volunteers() {
   const { addToast } = useToast();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [volunteerToBeRemoved, setVolunteerToBeRemoved] = useState(null);
 
-  const {
-    volunteersList,
-    clearVolunteersList,
-    filterVolunteersListByName,
-    deleteVolunteer,
-  } = useVolunteers();
+  const [volunteersList, setVolunteersList] = useState([]);
+  const [volunteerToBeRemoved, setVolunteerToBeRemoved] = useState(null);
+  const [numberOfPages, setNumberOfPages] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const formInitialState = { searchValue: '' };
   const {
@@ -36,6 +35,27 @@ export default function Volunteers() {
   function openModal() { setIsModalOpen(true); }
   function closeModal() { setIsModalOpen(false); }
 
+  function clearVolunteersList() {
+    setVolunteersList([]);
+  }
+
+  async function filterVolunteersListByName(name) {
+    if (!name || typeof name !== 'string' || !volunteersList.length) return;
+    console.log(name);
+  }
+
+  async function deleteVolunteer() {
+    if (!volunteerToBeRemoved || typeof volunteerToBeRemoved !== 'string') return;
+    try {
+      alert(volunteerToBeRemoved);
+      addToast('success');
+    } catch (error) {
+      addToast('error');
+    } finally {
+      closeModal();
+    }
+  }
+
   async function onSubmit({ searchValue }) {
     if (!searchValue) {
       clearVolunteersList();
@@ -45,17 +65,61 @@ export default function Volunteers() {
     filterVolunteersListByName(searchValue);
   }
 
-  async function handleDeleteVolunteer() {
-    if (volunteerToBeRemoved === null) return;
+  async function getVolunteers() {
     try {
-      await deleteVolunteer(volunteerToBeRemoved);
-      addToast('success');
+      const { data } = await axiosInstance.get('/volunteers?limit=10');
+      const volunteers = data.map((volunteer) => {
+        const {
+          id,
+          fullName,
+          isCurrentlyParticipating,
+          email,
+          listFreeDaysOfWeek,
+          occupation,
+        } = volunteer;
+
+        const availability = weekDays.map((day) => listFreeDaysOfWeek.includes(day));
+
+        return {
+          id,
+          fullName,
+          email,
+          occupation,
+          availability,
+          participation: isCurrentlyParticipating,
+        };
+      });
+      setVolunteersList(volunteers);
     } catch (error) {
       addToast('error');
-    } finally {
-      closeModal();
+      clearVolunteersList([]);
     }
   }
+
+  async function updateVolunteerParticipationStatus(volunteer) {
+    try {
+      await axiosInstance.patch(`/volunteers/${volunteer.id}/participation`, {
+        currentlyParticipation: !volunteer.participation,
+      });
+      addToast('success');
+      getVolunteers();
+    } catch (error) {
+      addToast('error');
+    }
+  }
+
+  async function fetchVolunteersListByPage(page) {
+    console.log(page);
+  }
+
+  useEffect(() => {
+    getVolunteers();
+  }, []);
+
+  useEffect(() => {
+    if (!volunteersList.length) return;
+    setNumberOfPages(3);
+  }, [volunteersList]);
 
   return (
     <AuthenticatedLayout>
@@ -64,7 +128,7 @@ export default function Volunteers() {
           Voluntários
         </h1>
         <form
-          className="relative"
+          className="relative -z-10"
           onSubmit={handleSubmit(onSubmit)}
         >
           <input
@@ -105,18 +169,24 @@ export default function Volunteers() {
               <tbody>
                 {volunteersList.map((volunteer, index) => (
                   <tr key={volunteer.id} className={`h-16 ${index % 2 === 0 ? 'bg-base' : 'bg-light-grey'}`}>
-                    <VolunteerData
+                    <Volunteer
                       key={volunteer.id}
                       volunteer={volunteer}
                       openModal={openModal}
                       setVolunteerToBeRemoved={setVolunteerToBeRemoved}
+                      updateVolunteerParticipationStatus={updateVolunteerParticipationStatus}
                     />
                   </tr>
                 ))}
               </tbody>
             </table>
             <div className="mt-12 flex justify-center">
-              <Pagination />
+                <Pagination
+                  numberOfPages={numberOfPages}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  fetchVolunteersListByPage={fetchVolunteersListByPage}
+                />
             </div>
           </div>
         )}
@@ -124,7 +194,7 @@ export default function Volunteers() {
       <Modal
         open={isModalOpen}
         setOpen={setIsModalOpen}
-        onCommit={handleDeleteVolunteer}
+        onCommit={deleteVolunteer}
         confirmationTitle="Confirmar ação"
         cancelButtonText="Cancelar"
         confirmationButtonText="Sim, excluir"
