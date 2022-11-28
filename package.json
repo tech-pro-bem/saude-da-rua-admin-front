@@ -16,7 +16,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-router-dom": "^6.3.0",
-    "tw-elements": "^1.0.0-alpha12"
+    "tw-elements": "^1.0.0-alpha12",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
