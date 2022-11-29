@@ -39,32 +39,6 @@ export default function Volunteers() {
     setVolunteersList([]);
   }
 
-  async function filterVolunteersListByName(name) {
-    if (!name || typeof name !== 'string' || !volunteersList.length) return;
-    console.log(name);
-  }
-
-  async function deleteVolunteer() {
-    if (!volunteerToBeRemoved || typeof volunteerToBeRemoved !== 'string') return;
-    try {
-      alert(volunteerToBeRemoved);
-      addToast('success');
-    } catch (error) {
-      addToast('error');
-    } finally {
-      closeModal();
-    }
-  }
-
-  async function onSubmit({ searchValue }) {
-    if (!searchValue) {
-      clearVolunteersList();
-      return;
-    }
-
-    filterVolunteersListByName(searchValue);
-  }
-
   async function getVolunteers() {
     try {
       const { data } = await axiosInstance.get('/volunteers?limit=10');
@@ -92,7 +66,6 @@ export default function Volunteers() {
       setVolunteersList(volunteers);
     } catch (error) {
       addToast('error');
-      clearVolunteersList([]);
     }
   }
 
@@ -108,8 +81,37 @@ export default function Volunteers() {
     }
   }
 
+  async function deleteVolunteer() {
+    if (!volunteerToBeRemoved || typeof volunteerToBeRemoved !== 'string') return;
+
+    try {
+      await axiosInstance.delete(`volunteers/${volunteerToBeRemoved}`);
+      addToast('success');
+    } catch (error) {
+      addToast('error');
+    } finally {
+      setVolunteerToBeRemoved(null);
+      closeModal();
+      getVolunteers();
+    }
+  }
+
+  async function filterVolunteersListByName(name) {
+    if (!name || typeof name !== 'string' || !volunteersList.length) return;
+    console.log(name);
+  }
+
   async function fetchVolunteersListByPage(page) {
     console.log(page);
+  }
+
+  async function onSubmit({ searchValue }) {
+    if (!searchValue) {
+      clearVolunteersList();
+      return;
+    }
+
+    filterVolunteersListByName(searchValue);
   }
 
   useEffect(() => {
