@@ -6,3 +6,7 @@ export function getSessionStorage(key) {
   const getResult = sessionStorage.getItem(key);
   return JSON.parse(getResult);
 }
+
+export function removeSessionStorage(key) {
+  sessionStorage.removeItem(key);
+}
