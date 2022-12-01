@@ -8,7 +8,8 @@ import { useToast } from '../contexts/toastContext';
 import ToastContainer from '../components/Toast/ToastContainer';
 import Input from '../components/Input/index';
 import Modal from '../components/Modal';
-import { PERMISSION_LEVEL } from '../data/pixKey';
+import { usePermissions } from '../contexts/permissionsContext';
+import { ADMIN_MASTER } from '../data/permissions';
 
 export default function PixUpdate() {
   const {
@@ -22,26 +23,13 @@ export default function PixUpdate() {
     defaultValues: { pixKey: '', confirmPixKey: '' },
   });
 
-  const [userHasPermission, setUserHasPermission] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [currentPixKey, setCurrentPixKey] = useState('');
   const [newPixKey, setNewPixKey] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { addToast } = useToast();
-
-  const getPermissions = async () => {
-    try {
-      const response = await axiosInstance.get('/get/admin/me');
-      if (response.data.permissionLevel === PERMISSION_LEVEL) {
-        setUserHasPermission(true);
-      } else {
-        addToast('warning');
-      }
-    } catch {
-      addToast('error');
-    }
-  };
+  const { userPermission } = usePermissions();
 
   const getPixKey = async () => {
     try {
@@ -54,8 +42,11 @@ export default function PixUpdate() {
   };
 
   useEffect(() => {
-    getPermissions();
     getPixKey();
+
+    if (userPermission !== ADMIN_MASTER) {
+      addToast('warning');
+    }
   }, []);
 
   useEffect(() => {
@@ -101,7 +92,7 @@ export default function PixUpdate() {
           </div>
         </div>
 
-        {userHasPermission ? (
+        {userPermission === ADMIN_MASTER ? (
           <>
             <form className="w-full " onSubmit={handleSubmit(onSubmit)}>
               <h2 className="font-bold text-primary-black leading-[27px] text-lg mb-6 mt-8">
@@ -174,7 +165,6 @@ export default function PixUpdate() {
               <span>Confirmar a atualização da chave Pix?</span>
             </Modal>
           </>
-
         ) : (
           <Link to="/">
             <button type="button" className="btn primary-btn h-12 w-[202px] mt-[72px]">

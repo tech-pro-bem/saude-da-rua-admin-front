@@ -8,11 +8,19 @@ import detailsIcon from '../assets/details.svg';
 import trashIcon from '../assets/trash.svg';
 import { useToast } from '../contexts/toastContext';
 import { useVolunteers } from '../contexts/volunteersContext';
+import { usePermissions } from '../contexts/permissionsContext';
+import { ADMIN_MASTER } from '../data/permissions';
 
-export default function VolunteerData({ volunteer, openModal, setVolunteerToBeRemoved }) {
+export default function VolunteerData({
+  volunteer,
+  openModal,
+  setVolunteerToBeRemoved,
+}) {
   const [participationStatus, setParticipationStatus] = useState(volunteer.participation);
+
   const { updateVolunteerParticipationStatus } = useVolunteers();
   const { addToast } = useToast();
+  const { userPermission } = usePermissions();
 
   const weekDays = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
 
@@ -28,8 +36,12 @@ export default function VolunteerData({ volunteer, openModal, setVolunteerToBeRe
   }
 
   function handleRemoveVolunteer() {
-    setVolunteerToBeRemoved(volunteer.id);
-    openModal();
+    if (userPermission === ADMIN_MASTER) {
+      setVolunteerToBeRemoved(volunteer.id);
+      openModal();
+    } else {
+      addToast('warning');
+    }
   }
 
   return (
@@ -76,7 +88,6 @@ export default function VolunteerData({ volunteer, openModal, setVolunteerToBeRe
           </button>
         </div>
       </td>
-
     </>
   );
 }

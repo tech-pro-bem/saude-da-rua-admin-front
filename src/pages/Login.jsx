@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import eyeClosedIcon from '../assets/eye-off.svg';
 import eyeOpenIcon from '../assets/eye-on.svg';
 import { saveLocalStorage, getLocalStorage } from '../utils/localStorage';
+import { usePermissions } from '../contexts/permissionsContext';
 import { saveSessionStorage } from '../utils/sessionStorage';
 import axiosInstance from '../service/axiosInstance';
 
@@ -14,11 +15,8 @@ function Login() {
   const [userValues, setUserValues] = useState({ email: '', password: '' });
   const [mustSaveUser, setMustSaveUser] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm({ defaultValues: userValues });
+  const { getPermissions } = usePermissions();
+  const { register, handleSubmit, reset } = useForm({ defaultValues: userValues });
 
   useEffect(() => {
     const value = getLocalStorage('user');
@@ -30,25 +28,28 @@ function Login() {
   }, [reset]);
 
   const navigate = useNavigate();
-  function onSubmit(data) {
+  const onSubmit = async (data) => {
     setHasLoginErrorOccurred(false);
-    axiosInstance.post('login', data).then(
-      (response) => {
-        saveSessionStorage('token', response.data.token);
-        if (mustSaveUser) {
-          saveLocalStorage('user', data);
-        }
-        navigate('/');
-      },
-    ).catch(() => {
+    try {
+      const response = await axiosInstance.post('login', data);
+      const getPermissionsPromise = getPermissions();
+      saveSessionStorage('token', response.data.token);
+      if (mustSaveUser) {
+        saveLocalStorage('user', data);
+      }
+      await getPermissionsPromise;
+      navigate('/');
+    } catch {
       setHasLoginErrorOccurred(true);
-    });
-  }
+    }
+  };
 
   return (
     <main className="min-h-screen flex justify-center items-center relative">
       <section className="bg-base w-full max-w-[563px] py-[142px] px-12 shadow-xl">
-        <h1 className="font-semibold text-[32px] leading-[48px] text-center mb-8 text-primary-black">Saúde da Rua</h1>
+        <h1 className="font-semibold text-[32px] leading-[48px] text-center mb-8 text-primary-black">
+          Saúde da Rua
+        </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="email" className="flex flex-col mb-6">
             <span className="text-primary-black mb-2">E-mail</span>
@@ -59,7 +60,9 @@ function Login() {
               required
               placeholder="Digite o e-mail cadastrado"
               className={`px-6 py-3 bg-transparent rounded-lg text-primary-black placeholder:text-medium-grey
-                outline outline-1 ${hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'}`}
+                outline outline-1 ${
+                  hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'
+                }`}
               // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('email')}
             />
@@ -74,14 +77,18 @@ function Login() {
                 required
                 placeholder="Digite a sua senha"
                 className={`w-full px-6 py-3 pr-14 bg-transparent rounded-lg text-primary-black placeholder:text-medium-grey
-                outline outline-1 ${hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'}`}
+                outline outline-1 ${
+                  hasLoginErrorOccurred ? 'outline-error' : 'outline-primary-black'
+                }`}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('password')}
               />
               <div className="pl-2 absolute inset-y-0 right-4 h-full flex items-center">
                 <button
                   type="button"
-                  onClick={() => { setIsPasswordVisible(!isPasswordVisible); }}
+                  onClick={() => {
+                    setIsPasswordVisible(!isPasswordVisible);
+                  }}
                   title={isPasswordVisible ? 'Esconder senha' : 'Mostrar senha'}
                 >
                   {isPasswordVisible ? (
@@ -93,9 +100,7 @@ function Login() {
               </div>
             </div>
             {hasLoginErrorOccurred && (
-              <span className="mt-1 text-sm text-error">
-                E-mail e/ou senha incorretos
-              </span>
+              <span className="mt-1 text-sm text-error">E-mail e/ou senha incorretos</span>
             )}
           </label>
           <div className="flex items-center gap-2 mb-[60px]">
