@@ -23,7 +23,6 @@ export default function Pagination({
       setCurrentPage(page);
     } catch (error) {
       addToast('error');
-      console.log(error);
     }
   }
 

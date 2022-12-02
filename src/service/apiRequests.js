@@ -1,7 +1,7 @@
 import weekDays from '../data/weekDays';
 import axiosInstance from './axiosInstance';
 
-async function fetchVolunteers(searchTerm, limit = 5, page = 0) {
+async function fetchVolunteers(searchTerm, limit = 15, page = 0) {
   const searchParam = searchTerm ? `&searchTerm=${searchTerm}` : '';
 
   try {
