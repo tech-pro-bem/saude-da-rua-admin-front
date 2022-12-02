@@ -12,7 +12,7 @@ export default function Volunteer({
   volunteer,
   openModal,
   setVolunteerToBeRemoved,
-  updateVolunteerParticipationStatus,
+  handleUpdateVolunteerParticipationStatus,
 }) {
   function handleRemoveVolunteer() {
     setVolunteerToBeRemoved(volunteer.id);
@@ -31,7 +31,7 @@ export default function Volunteer({
               title="Alterar status de participação do(a) voluntário(a)"
               checked={volunteer.participation}
               role="switch"
-              onChange={() => { updateVolunteerParticipationStatus(volunteer); }}
+              onChange={() => { handleUpdateVolunteerParticipationStatus(volunteer); }}
               id="flexSwitchCheckDefault"
             />
           </div>
@@ -54,7 +54,7 @@ export default function Volunteer({
       </td>
       <td>
         <div className="flex items-center justify-center gap-2">
-          <Link to={`volunteer/${volunteer.id}`} title="Ir para página de detalhes do voluntário">
+          <Link to={`/volunteer/${volunteer.id}`} title="Ir para página de detalhes do voluntário">
             <img src={detailsIcon} alt="Ícone de página com conteúdo escrito" />
           </Link>
           <button type="button" title="Remover voluntário" onClick={handleRemoveVolunteer}>

@@ -3,22 +3,26 @@
 import React from 'react';
 import nextIcon from '../../assets/next.svg';
 import prevIcon from '../../assets/previous.svg';
+import { useToast } from '../../contexts/toastContext';
 
 export default function Pagination({
   numberOfPages,
   currentPage,
   setCurrentPage,
-  fetchVolunteersListByPage,
+  getVolunteers,
 }) {
+  const { addToast } = useToast();
   const pages = Array(numberOfPages).fill('').map((_, index) => index + 1);
 
   async function selectPage(page) {
     if (!page || typeof page !== 'number') return;
 
+    const searchPage = page - 1;
     try {
-      await fetchVolunteersListByPage(page);
+      await getVolunteers(searchPage);
       setCurrentPage(page);
     } catch (error) {
+      addToast('error');
       console.log(error);
     }
   }
