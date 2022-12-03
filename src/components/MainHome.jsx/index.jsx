@@ -8,7 +8,6 @@ function MainHome() {
   useEffect(() => {
     axiosInstance.get('/get/admin/me').then((response) => {
       setUserName(response.data.name);
-      console.log(response.data.name);
     });
   }, []);
 

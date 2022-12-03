@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import File from '../../assets/file.svg';
 import Home from '../../assets/home.svg';
@@ -9,49 +9,74 @@ import Logout from '../../assets/logout.svg';
 import Pix from '../../assets/pix.svg';
 import Settings from '../../assets/settings.svg';
 import User from '../../assets/user.svg';
+import { removeSessionStorage } from '../../utils/sessionStorage';
+import { removeLocalStorage } from '../../utils/localStorage';
+import { usePermissions } from '../../contexts/permissionsContext';
+import { ADMIN_MASTER } from '../../data/permissions';
 
 function SideBar() {
   const [open, setOpen] = useState(false);
-  const router = useLocation();
 
-  const Menus = [
+  const router = useLocation();
+  const { userPermission } = usePermissions();
+
+  const logOut = () => {
+    removeLocalStorage('user');
+    removeSessionStorage('token');
+  };
+
+  const items = [
     {
       name: 'Início',
       icon: Home,
       path: '/',
+      isAdminVolunteerAllowed: true,
     },
     {
       name: 'Planilha de voluntários',
       icon: List,
       path: '/voluntarios',
+      isAdminVolunteerAllowed: true,
     },
     {
       name: 'Relatórios financeiros',
       icon: File,
       path: '/relatorios',
+      isAdminVolunteerAllowed: false,
     },
     {
       name: 'Chave PIX',
       icon: Pix,
       path: '/chave-pix',
+      isAdminVolunteerAllowed: false,
     },
     {
       name: 'Acessos',
       icon: User,
       path: '/acessos',
+      isAdminVolunteerAllowed: true,
     },
     {
       name: 'Configurações da conta',
       icon: Settings,
       path: '/configuracoes',
+      isAdminVolunteerAllowed: true,
     },
     {
       name: 'Sair',
       icon: Logout,
       path: '/login',
       color: 'text-error',
+      isAdminVolunteerAllowed: true,
+      handleClick: logOut,
     },
   ];
+  const adminVolunteerAllowedItems = items.filter((menu) => menu.isAdminVolunteerAllowed);
+
+  const menuItems = useMemo(
+    () => (userPermission === ADMIN_MASTER ? items : adminVolunteerAllowedItems),
+    [userPermission],
+  );
 
   return (
     <aside
@@ -68,22 +93,22 @@ function SideBar() {
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
-          {Menus.map((menu, index) => (
-            <Link to={menu.path} key={index}>
+          {menuItems.map((item, index) => (
+            <Link to={item.path} key={index} onClick={item.handleClick && item.handleClick}>
               <li
                 className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${
-                  router.pathname === menu.path && 'bg-light-blue'
+                  router.pathname === item.path && 'bg-light-blue'
                 }`}
               >
-                <img src={menu.icon} alt="Home" className="w-7 h-7" />
+                <img src={item.icon} alt="Home" className="w-7 h-7" />
                 <span
                   className={`${
                     !open && 'scale-0 left-0 w-0'
                   } ml-3  duration-300 whitespace-nowrap origin-left ${
-                    menu.color || 'text-primary-black'
+                    item.color || 'text-primary-black'
                   }`}
                 >
-                  {menu.name}
+                  {item.name}
                 </span>
               </li>
             </Link>
