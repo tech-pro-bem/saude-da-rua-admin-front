@@ -1,11 +1,11 @@
 import React from 'react';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
-import MainVolunterrDetails from '../components/MainVolunterrDetails';
+import MainVolunteerDetails from '../components/MainVolunteerDetails';
 
 function VolunteerDetails() {
   return (
     <AuthenticatedLayout>
-      <MainVolunterrDetails />
+      <MainVolunteerDetails />
     </AuthenticatedLayout>
   );
 }

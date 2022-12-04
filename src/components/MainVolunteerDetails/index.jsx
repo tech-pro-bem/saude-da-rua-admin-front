@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import svgEdit from '../../assets/editar.svg';
 
-function MainVolunterrDetails() {
+function MainVolunteerDetails() {
   const lIMITCHAR = 255;
   const [charCount, setCharCount] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -189,4 +189,4 @@ function MainVolunterrDetails() {
   );
 }
 
-export default MainVolunterrDetails;
+export default MainVolunteerDetails;
