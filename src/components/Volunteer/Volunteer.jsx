@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import detailsIcon from '../../assets/details.svg';
 import trashIcon from '../../assets/trash.svg';
 import weekDays from '../../data/weekDays';
+import { useToast } from '../../contexts/toastContext';
+import { usePermissions } from '../../contexts/permissionsContext';
+import { ADMIN_MASTER } from '../../data/permissions';
 
 export default function Volunteer({
   volunteer,
@@ -14,9 +17,16 @@ export default function Volunteer({
   setVolunteerToBeRemoved,
   handleUpdateVolunteerParticipationStatus,
 }) {
+  const { userPermission } = usePermissions();
+  const { addToast } = useToast();
+
   function handleRemoveVolunteer() {
-    setVolunteerToBeRemoved(volunteer.id);
-    openModal();
+    if (userPermission === ADMIN_MASTER) {
+      setVolunteerToBeRemoved(volunteer.id);
+      openModal();
+    } else {
+      addToast('warning');
+    }
   }
 
   return (
@@ -62,7 +72,6 @@ export default function Volunteer({
           </button>
         </div>
       </td>
-
     </>
   );
 }
