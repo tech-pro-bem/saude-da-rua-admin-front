@@ -1,46 +1,42 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import nextIcon from '../../assets/next.svg';
 import prevIcon from '../../assets/previous.svg';
-import { useVolunteers } from '../../contexts/volunteersContext';
+import { useToast } from '../../contexts/toastContext';
 
-export default function Pagination() {
-  const { volunteersList, fetchVolunteersListByPage } = useVolunteers();
-
-  const [pages, setPages] = useState([]);
-  const [currentSelectedPage, setCurrentSelectedPage] = useState(1);
-
-  useEffect(() => {
-    if (volunteersList.length) {
-      const numberOfPages = 3;
-      const pagesList = Array(numberOfPages).fill('').map((_, index) => index + 1);
-      setPages(pagesList);
-    }
-  }, [volunteersList]);
+export default function Pagination({
+  numberOfPages,
+  currentPage,
+  setCurrentPage,
+  getVolunteers,
+}) {
+  const { addToast } = useToast();
+  const pages = Array(numberOfPages).fill('').map((_, index) => index + 1);
 
   async function selectPage(page) {
     if (!page || typeof page !== 'number') return;
 
+    const searchPage = page - 1;
     try {
-      await fetchVolunteersListByPage(page);
-      setCurrentSelectedPage(page);
+      await getVolunteers(searchPage);
+      setCurrentPage(page);
     } catch (error) {
-      console.log(error);
+      addToast('error');
     }
   }
 
   async function selectPreviousPage() {
-    if (currentSelectedPage === 1) return;
+    if (currentPage === 1) return;
 
-    const previousPage = currentSelectedPage - 1;
+    const previousPage = currentPage - 1;
     selectPage(previousPage);
   }
 
   async function selectNextPage() {
-    if (currentSelectedPage === pages.length) return;
+    if (currentPage === pages.length) return;
 
-    const nextPage = currentSelectedPage + 1;
+    const nextPage = currentPage + 1;
     selectPage(nextPage);
   }
 
@@ -51,7 +47,7 @@ export default function Pagination() {
       <button
         type="button"
         onClick={selectPreviousPage}
-        disabled={currentSelectedPage === 1}
+        disabled={currentPage === 1}
         title="Página anterior"
         className="disabled:cursor-not-allowed"
       >
@@ -64,7 +60,7 @@ export default function Pagination() {
           onClick={() => selectPage(page)}
           title={`Página ${page}`}
           className={`h-8 w-8 rounded-[4px] border border-light-grey font-semibold
-          ${currentSelectedPage === page ? 'bg-dark-blue text-base' : 'text-primary-black'}`}
+          ${currentPage === page ? 'bg-dark-blue text-base' : 'text-primary-black'}`}
         >
           {page}
         </button>
@@ -72,7 +68,7 @@ export default function Pagination() {
       <button
         type="button"
         onClick={selectNextPage}
-        disabled={currentSelectedPage === pages.length}
+        disabled={currentPage === pages.length}
         title="Próxima página"
         className="disabled:cursor-not-allowed"
       >

@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+/* eslint-disable react/prop-types */
 import jwtDecode from 'jwt-decode';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SideBar from '../../components/SideBar/SideBar';
+import Sidebar from '../../components/Sidebar';
 import { getSessionStorage } from '../../utils/sessionStorage';
 
 function AuthenticatedLayout({ children }) {
@@ -25,7 +26,7 @@ function AuthenticatedLayout({ children }) {
   return (
     <div className="flex">
       <div className="mr-[205px]">
-        <SideBar />
+        <Sidebar />
       </div>
       {children}
     </div>

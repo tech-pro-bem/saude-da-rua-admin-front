@@ -2,38 +2,23 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import detailsIcon from '../assets/details.svg';
-import trashIcon from '../assets/trash.svg';
-import { useToast } from '../contexts/toastContext';
-import { useVolunteers } from '../contexts/volunteersContext';
-import { usePermissions } from '../contexts/permissionsContext';
-import { ADMIN_MASTER } from '../data/permissions';
+import detailsIcon from '../../assets/details.svg';
+import trashIcon from '../../assets/trash.svg';
+import weekDays from '../../data/weekDays';
+import { useToast } from '../../contexts/toastContext';
+import { usePermissions } from '../../contexts/permissionsContext';
+import { ADMIN_MASTER } from '../../data/permissions';
 
-export default function VolunteerData({
+export default function Volunteer({
   volunteer,
   openModal,
   setVolunteerToBeRemoved,
+  handleUpdateVolunteerParticipationStatus,
 }) {
-  const [participationStatus, setParticipationStatus] = useState(volunteer.participation);
-
-  const { updateVolunteerParticipationStatus } = useVolunteers();
-  const { addToast } = useToast();
   const { userPermission } = usePermissions();
-
-  const weekDays = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'];
-
-  async function handleChangeParticipationStatus() {
-    try {
-      await updateVolunteerParticipationStatus(volunteer.id);
-      setParticipationStatus(!participationStatus);
-      addToast('success');
-    } catch (error) {
-      addToast('error');
-      // console.log(error);
-    }
-  }
+  const { addToast } = useToast();
 
   function handleRemoveVolunteer() {
     if (userPermission === ADMIN_MASTER) {
@@ -51,18 +36,18 @@ export default function VolunteerData({
           <div className="form-check form-switch">
             <input
               className={`form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain focus:outline-none cursor-pointer shadow-sm
-                ${participationStatus ? 'bg-primary-blue' : 'bg-medium-grey'}`}
+                ${volunteer.participation ? 'bg-primary-blue' : 'bg-medium-grey'}`}
               type="checkbox"
               title="Alterar status de participação do(a) voluntário(a)"
-              checked={participationStatus}
+              checked={volunteer.participation}
               role="switch"
-              onChange={() => handleChangeParticipationStatus()}
+              onChange={() => { handleUpdateVolunteerParticipationStatus(volunteer); }}
               id="flexSwitchCheckDefault"
             />
           </div>
         </div>
       </td>
-      <td>{volunteer.name}</td>
+      <td>{volunteer.fullName}</td>
       <td>{volunteer.occupation}</td>
       <td>
         <div className="flex items-center gap-1">
@@ -72,15 +57,14 @@ export default function VolunteerData({
               className={`w-[18px] h-8 rounded-[4px] p-1 
                 ${isAvailableDay ? 'bg-light-blue' : 'bg-transparent'}`}
             >
-              {weekDays[index]}
+              {weekDays[index].charAt(0)}
             </span>
           ))}
         </div>
       </td>
       <td>
         <div className="flex items-center justify-center gap-2">
-          {/* Mudar o link para página de detalhes do voluntário quando estiver pronta! */}
-          <Link to="/" title="Ir para página de detalhes do voluntário">
+          <Link to={`/volunteer/${volunteer.id}`} title="Ir para página de detalhes do voluntário">
             <img src={detailsIcon} alt="Ícone de página com conteúdo escrito" />
           </Link>
           <button type="button" title="Remover voluntário" onClick={handleRemoveVolunteer}>

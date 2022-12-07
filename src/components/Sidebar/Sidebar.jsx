@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useMemo } from 'react';
@@ -14,7 +15,7 @@ import { removeLocalStorage } from '../../utils/localStorage';
 import { usePermissions } from '../../contexts/permissionsContext';
 import { ADMIN_MASTER } from '../../data/permissions';
 
-function SideBar() {
+function Sidebar() {
   const [open, setOpen] = useState(false);
 
   const router = useLocation();
@@ -80,10 +81,9 @@ function SideBar() {
 
   return (
     <aside
-      className={` ${
-        open ? 'w-[291px]' : 'w-[94px]'
-      } flex bg-base h-screen duration-500 transition-all fixed left-0
-      shadow-[0_4px_4px_rgba(16,24,40,0.1)] z-[999px]
+      className={`z-[999px] ${open ? 'w-[291px]' : 'w-[94px]'} 
+      flex bg-base h-screen duration-500 transition-all fixed left-0
+      shadow-[0_4px_4px_rgba(16,24,40,0.1)]
       `}
       aria-label="Sidebar"
     >
@@ -119,4 +119,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default Sidebar;
