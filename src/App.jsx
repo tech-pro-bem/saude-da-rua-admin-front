@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import PixKey from './pages/PixKey';
 import Volunteers from './pages/Volunteers';
+import Medicines from './pages/Medicines';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/chave-pix" element={<PixKey />} />
+            <Route path="/medicamentos" element={<Medicines />} />
             <Route
               path="/voluntarios"
               element={<Volunteers />}
