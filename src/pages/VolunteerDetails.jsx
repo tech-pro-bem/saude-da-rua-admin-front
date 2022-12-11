@@ -26,7 +26,6 @@ function VolunteerDetails() {
     setDataFetchingError(false);
     try {
       const { data } = await axiosInstance.get(`/volunteer/${volunteerId}`);
-      console.log(data);
       setVolunteerData(data);
     } catch (error) {
       setDataFetchingError(true);
