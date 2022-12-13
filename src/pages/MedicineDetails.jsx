@@ -79,7 +79,7 @@ function MedicineDetails() {
                 Cidade:
                 <span className="font-normal text-primary-black">
                   {' '}
-                  {medicineDetails?.city || ''}
+                  {medicineDetails?.city }
                 </span>
               </span>
             </div>
@@ -114,7 +114,7 @@ function MedicineDetails() {
                 </span>
               </span>
               <span className="font-semibold text-primary-black">
-                MG-Miligramas
+                Concentração:
                 <span className="font-normal text-primary-black">
                   {' '}
                   {medicineDetails?.milligrams}
