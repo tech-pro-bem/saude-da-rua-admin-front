@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import editIcon from '../assets/edit.svg';
 import ToastContainer from '../components/Toast/ToastContainer';
 import { useToast } from '../contexts/toastContext';
+import convertSemesterToNumber from '../data/semesters';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
 import axiosInstance from '../service/axiosInstance';
 
@@ -15,37 +16,45 @@ function VolunteerDetails() {
   const { volunteerId } = useParams();
   const { addToast } = useToast();
 
-  const [comments, setComments] = useState('');
+  const [observations, setObservations] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [volunteerData, setVolunteerData] = useState(null);
   const [dataFetchingError, setDataFetchingError] = useState(false);
 
-  const commentsRef = useRef(null);
+  const observationsRef = useRef(null);
 
   async function getVolunteerData() {
     setDataFetchingError(false);
     try {
-      const { data } = await axiosInstance.get(`/volunteer/${volunteerId}`);
-      setVolunteerData(data);
+      const { data: volunteer } = await axiosInstance.get(`/volunteer/${volunteerId}`);
+      setVolunteerData(volunteer);
     } catch (error) {
       setDataFetchingError(true);
       addToast('error');
     }
   }
 
-  function handleSubmit() {
-    if (!comments) {
+  async function handleUpdateVolunteerObservations() {
+    if (!volunteerData.observations && !observations) {
       addToast('error');
       return;
     }
 
-    console.log(comments);
-    /* Chamar API do backend passando o valor do estado "comments"! */
+    try {
+      await axiosInstance.patch(`/volunteers/${volunteerId}`, { observations });
+      addToast('success');
+    } catch (error) {
+      observationsRef.current.value = volunteerData.observations;
+      addToast('error');
+    } finally {
+      await getVolunteerData();
+      setIsEditing(false);
+    }
   }
 
   useEffect(() => {
     if (isEditing) {
-      commentsRef.current.focus();
+      observationsRef.current.focus();
     }
   }, [isEditing]);
 
@@ -68,7 +77,7 @@ function VolunteerDetails() {
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-3xl text-error flex flex-col gap-4 items-center justify-center">
           <span className="block">Algo deu errado :/</span>
-          <span className="block">Por favor, tente novamente.</span>
+          <span className="block">Por favor, tente novamente!</span>
         </p>
       </div>
     );
@@ -139,14 +148,14 @@ function VolunteerDetails() {
                 Curso:
                 <span className="font-normal text-primary-black">
                   {' '}
-                  {volunteerData.speciality}
+                  {volunteerData.course}
                 </span>
               </span>
               <span className="font-semibold text-primary-black">
                 Semestre:
                 <span className="font-normal text-primary-black">
                   {' '}
-                  {volunteerData.semester}
+                  {volunteerData.semester && convertSemesterToNumber(volunteerData.semester)}
                 </span>
               </span>
             </div>
@@ -222,15 +231,16 @@ function VolunteerDetails() {
           </div>
           <textarea
             className={`bg-ultra-light-grey rounded py-6 px-4 resize-none border-2  
-              ${comments.length > 255 ? 'outline-error border-error' : 'outline-primary-blue border-transparent'
+              ${observations.length > 255 ? 'outline-error border-error' : 'outline-primary-blue border-transparent'
               }`}
-            ref={commentsRef}
-            onChange={(e) => setComments(e.target.value)}
+            ref={observationsRef}
+            defaultValue={volunteerData.observations || ''}
+            onChange={(e) => setObservations(e.target.value)}
             disabled={!isEditing}
           />
           {isEditing && (
-            <span className={`text-right ${comments.length > textMaxSize ? 'text-error' : 'text-primary-black'}`}>
-              {`${comments.length}/${textMaxSize}`}
+            <span className={`text-right ${observations.length > textMaxSize ? 'text-error' : 'text-primary-black'}`}>
+              {`${observations.length}/${textMaxSize}`}
             </span>
           )}
         </div>
@@ -243,9 +253,9 @@ function VolunteerDetails() {
           </Link>
           <button
             type="button"
-            onClick={handleSubmit}
+            onClick={handleUpdateVolunteerObservations}
             className="py-4 px-24 bg-primary-black text-base font-bold rounded-full disabled:bg-light-grey disabled:text-medium-grey disable:cursor-not-allowed"
-            disabled={comments.length > textMaxSize || !isEditing}
+            disabled={observations.length > textMaxSize || !isEditing}
           >
             Salvar
           </button>
