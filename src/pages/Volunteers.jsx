@@ -14,7 +14,7 @@ import Volunteer from '../components/Volunteer';
 import { useToast } from '../contexts/toastContext';
 import tableHeaders from '../data/tableHeaders';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
-import { deleteVolunteer, fetchVolunteers, updateVolunteerParticipationStatus } from '../service/apiRequests';
+import { deleteVolunteer, fetchVolunteers, updateVolunteerParticipationStatus } from '../service/apiRequests/volunteers';
 
 export default function Volunteers() {
   const { addToast } = useToast();

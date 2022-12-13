@@ -1,20 +1,16 @@
-import weekDays from '../data/weekDays';
-import axiosInstance from './axiosInstance';
+import weekDays from '../../data/weekDays';
+import axiosInstance from '../axiosInstance';
 
 async function fetchVolunteers(searchTerm, limit = 15, page = 0) {
   const searchParam = searchTerm ? `&searchTerm=${searchTerm}` : '';
 
   try {
-    const { data } = await axiosInstance.get(`/volunteers?page=${page}&limit=${limit}${searchParam}`);
+    const { data } = await axiosInstance.get(
+      `/volunteers?page=${page}&limit=${limit}${searchParam}`
+    );
     const volunteers = data.volunteers.map((volunteer) => {
-      const {
-        id,
-        fullName,
-        isCurrentlyParticipating,
-        email,
-        listFreeDaysOfWeek,
-        occupation,
-      } = volunteer;
+      const { id, fullName, isCurrentlyParticipating, email, listFreeDaysOfWeek, occupation } =
+        volunteer;
 
       const availability = weekDays.map((day) => listFreeDaysOfWeek.includes(day));
 
@@ -53,8 +49,4 @@ async function deleteVolunteer(volunteer) {
   }
 }
 
-export {
-  fetchVolunteers,
-  updateVolunteerParticipationStatus,
-  deleteVolunteer,
-};
+export { fetchVolunteers, updateVolunteerParticipationStatus, deleteVolunteer };
