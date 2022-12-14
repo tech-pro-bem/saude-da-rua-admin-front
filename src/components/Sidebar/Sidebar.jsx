@@ -8,8 +8,6 @@ import Home from '../../assets/home.svg';
 import List from '../../assets/list.svg';
 import Logout from '../../assets/logout.svg';
 import Pix from '../../assets/pix.svg';
-import Settings from '../../assets/settings.svg';
-import User from '../../assets/user.svg';
 import Medicines from '../../assets/medicines.svg';
 import { removeSessionStorage } from '../../utils/sessionStorage';
 import { removeLocalStorage } from '../../utils/localStorage';
@@ -56,18 +54,6 @@ function Sidebar() {
       name: 'Medicamentos',
       icon: Medicines,
       path: '/medicamentos',
-      isAdminVolunteerAllowed: true,
-    },
-    {
-      name: 'Acessos',
-      icon: User,
-      path: '/acessos',
-      isAdminVolunteerAllowed: true,
-    },
-    {
-      name: 'Configurações da conta',
-      icon: Settings,
-      path: '/configuracoes',
       isAdminVolunteerAllowed: true,
     },
     {
