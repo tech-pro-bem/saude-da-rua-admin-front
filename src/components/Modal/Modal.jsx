@@ -18,7 +18,7 @@ function Modal({
         <Dialog.Title className="bg-primary-black py-4 px-6 text-[22px] font-semibold text-[#FBFBFB] leading-[33px]">
           {confirmationTitle}
         </Dialog.Title>
-        <Dialog.Description className="p-6 text-[18px] leading-[27px]">
+        <Dialog.Description className="p-6 text-[18px] leading-[27px] break-words">
           {children}
         </Dialog.Description>
         <div className="flex items-center justify-center gap-4 pb-6">

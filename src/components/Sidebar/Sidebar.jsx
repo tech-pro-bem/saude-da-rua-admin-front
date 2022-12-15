@@ -8,8 +8,7 @@ import Home from '../../assets/home.svg';
 import List from '../../assets/list.svg';
 import Logout from '../../assets/logout.svg';
 import Pix from '../../assets/pix.svg';
-import Settings from '../../assets/settings.svg';
-import User from '../../assets/user.svg';
+import Medicines from '../../assets/medicines.svg';
 import { removeSessionStorage } from '../../utils/sessionStorage';
 import { removeLocalStorage } from '../../utils/localStorage';
 import { usePermissions } from '../../contexts/permissionsContext';
@@ -52,15 +51,9 @@ function Sidebar() {
       isAdminVolunteerAllowed: false,
     },
     {
-      name: 'Acessos',
-      icon: User,
-      path: '/acessos',
-      isAdminVolunteerAllowed: true,
-    },
-    {
-      name: 'Configurações da conta',
-      icon: Settings,
-      path: '/configuracoes',
+      name: 'Medicamentos',
+      icon: Medicines,
+      path: '/medicamentos',
       isAdminVolunteerAllowed: true,
     },
     {
@@ -96,7 +89,7 @@ function Sidebar() {
           {menuItems.map((item, index) => (
             <Link to={item.path} key={index} onClick={item.handleClick && item.handleClick}>
               <li
-                className={`flex items-center mb-9 ml-0.5 px-8 py-3 rounded-lg hover:bg-light-blue ${
+                className={`flex items-center mb-9 ml-0.5 px-8 py-3 hover:bg-light-blue ${
                   router.pathname === item.path && 'bg-light-blue'
                 }`}
               >

@@ -42,11 +42,13 @@ export default function PixUpdate() {
 
   useEffect(() => {
     getPixKey();
+  }, []);
 
-    if (userPermission !== ADMIN_MASTER) {
+  useEffect(() => {
+    if (userPermission && userPermission !== ADMIN_MASTER) {
       addToast('warning');
     }
-  }, []);
+  }, [userPermission]);
 
   useEffect(() => {
     if (Object.values(dirtyFields).every(Boolean) && isValid) {
@@ -65,13 +67,14 @@ export default function PixUpdate() {
       const response = await axiosInstance.put('/pix', { key: newPixKey });
 
       if (response.status === 209) {
-        setIsModalOpen(false);
         setCurrentPixKey(newPixKey);
         addToast('success');
         reset();
       }
     } catch {
       addToast('error');
+    } finally {
+      setIsModalOpen(false);
     }
   };
 
