@@ -6,10 +6,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import detailsIcon from '../../assets/details.svg';
 import trashIcon from '../../assets/trash.svg';
-import weekDays from '../../data/weekDays';
-import { useToast } from '../../contexts/toastContext';
 import { usePermissions } from '../../contexts/permissionsContext';
+import { useToast } from '../../contexts/toastContext';
 import { ADMIN_MASTER } from '../../data/permissions';
+import weekDays from '../../data/weekDays';
 
 export default function Volunteer({
   volunteer,
@@ -64,7 +64,7 @@ export default function Volunteer({
       </td>
       <td>
         <div className="flex items-center justify-center gap-2">
-          <Link to={`/volunteer/${volunteer.id}`} title="Ir para página de detalhes do voluntário">
+          <Link to={`/voluntarios/${volunteer.id}`} title="Ir para página de detalhes do voluntário">
             <img src={detailsIcon} alt="Ícone de página com conteúdo escrito" />
           </Link>
           <button type="button" title="Remover voluntário" onClick={handleRemoveVolunteer}>

@@ -33,7 +33,7 @@ async function fetchVolunteers(searchTerm, limit = 15, page = 0) {
 
 async function updateVolunteerParticipationStatus(volunteer) {
   try {
-    await axiosInstance.patch(`/volunteers/${volunteer.id}/participation`, {
+    await axiosInstance.patch(`/volunteers/${volunteer.id}`, {
       currentlyParticipation: !volunteer.participation,
     });
   } catch (error) {
