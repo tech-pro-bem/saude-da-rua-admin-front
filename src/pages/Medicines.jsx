@@ -25,7 +25,7 @@ export default function Medicines() {
 
   async function getMedicines() {
     try {
-      const { data } = await fetchMedicines(false);
+      const { data } = await fetchMedicines();
       setMedicines(data);
     } catch (error) {
       addToast('error');
