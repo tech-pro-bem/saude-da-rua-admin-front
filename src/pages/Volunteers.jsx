@@ -101,7 +101,7 @@ export default function Volunteers() {
           Voluntários
         </h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="relative z-[-1]">
+          <div className="relative">
             <input
               className="border-primary-black border w-full py-3 px-6 rounded-full text-primary-black placeholder:text-medium-grey"
               type="text"
