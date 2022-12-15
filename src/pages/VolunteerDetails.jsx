@@ -148,7 +148,6 @@ function VolunteerDetails() {
                 Curso:
                 <span className="font-normal text-primary-black">
                   {' '}
-                  {volunteerData.course}
                 </span>
               </span>
               <span className="font-semibold text-primary-black">
@@ -194,7 +193,7 @@ function VolunteerDetails() {
                 Disponibilidade:
                 <span className="font-normal text-primary-black">
                   {' '}
-                  {volunteerData.listFreeDaysOfWeek.join(' e ').toLowerCase()}
+                  {volunteerData.listFreeDaysOfWeek.join(' / ').toLowerCase()}
                 </span>
               </span>
               <span className="font-semibold text-primary-black">
