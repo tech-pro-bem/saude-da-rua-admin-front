@@ -190,7 +190,7 @@ export default function FinancialReports() {
                   <td>{item.name}</td>
                   <td>
                     <div className="flex items-center justify-center gap-2">
-                      <a title="Baixar arquivo" href={item.url}>
+                      <a title="Baixar arquivo" href={item.url} download target="_blank" rel="noreferrer">
                         <img src={downloadIcon} alt="Ícone de página com conteúdo escrito" />
                       </a>
                       <button type="button" title="Apagar arquivo" onClick={() => prepareToDelete(item.id)}>

@@ -9,11 +9,12 @@ async function fetchReports() {
 
 async function uploadReport(report) {
   const base64Report = await makeBase64(report);
+  const base64ReportValue = base64Report.replace('data:application/pdf;base64,', '');
   const response = await axiosInstance.post('/file/PDF', {
     name: report.name,
     file: {
       mime: 'application/pdf',
-      data: base64Report,
+      data: base64ReportValue,
     },
   });
 
