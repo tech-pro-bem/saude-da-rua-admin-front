@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getSessionStorage } from '../utils/sessionStorage';
-import UNAUTHENTICATED_ROUTES from '../constants/constants';
+import UNAUTHENTICATED_ROUTES from '../data/unauthenticatedRoutes';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,

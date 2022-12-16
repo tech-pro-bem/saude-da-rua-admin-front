@@ -12,7 +12,7 @@
 
 @layer components {
   .btn {
-    @apply rounded-full text-white font-bold disabled:bg-light-grey disabled:text-medium-grey transition-colors;
+    @apply rounded-full text-white font-bold disabled:bg-light-grey disabled:text-medium-grey transition-colors disabled:hover:bg-light-grey disabled:cursor-not-allowed;
   }
   .primary-btn {
     @apply bg-primary-black hover:bg-primary-blue;
@@ -23,7 +23,31 @@
 }
 
 @layer utilities {
+  td{
+    @apply p-2 text-primary-black;
+  }
+
   .btn-small {
     @apply py-3 px-20 text-base leading-[auto];
+  }
+
+  .participation {
+    @apply w-[156px] text-center;
+  }
+
+  .name {
+    @apply w-[382px];
+  }
+
+  .occupation {
+    @apply w-[199px];
+  }
+
+  .availability {
+    @apply w-[201px];
+  }
+
+  .actions {
+    @apply w-[108px] text-center;
   }
 }

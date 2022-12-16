@@ -1,6 +1,6 @@
 import React from 'react';
+import MainHome from '../components/MainHome';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
-import MainHome from '../components/MainHome.jsx';
 
 function HomePage() {
   return (
