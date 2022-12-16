@@ -13,20 +13,46 @@ import trashIcon from '../assets/trash.svg';
 import downloadIcon from '../assets/download.svg';
 import fileIcon from '../assets/file.svg';
 import closeIcon from '../assets/close_red.svg';
+import { fetchReports, uploadReports, deleteReport } from '../service/apiRequests/reports';
 
-export default function Volunteers() {
+export default function FinancialReports() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [deleteStaging, setDeleteStaging] = useState();
+  const [isUploading, setIsUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileList, setFileList] = useState([]);
 
   const { addToast } = useToast();
 
   const { getRootProps, getInputProps } = useDropzone({
+    accept: { 'application/pdf': ['.pdf'] },
+    maxFiles: 20,
     onDrop: (acceptedFiles) => {
       setSelectedFiles([...selectedFiles, ...acceptedFiles]);
     }
   });
+
+  const successUpload = (responses) => {
+    setSelectedFiles([]);
+    addToast('success');
+    const newFiles = responses
+      .map((response) => response.data)
+      .reduce((prev, curr) => prev.concat(curr), []);
+    setFileList(...newFiles, ...fileList);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsUploading(true);
+    try {
+      const responses = await uploadReports(selectedFiles);
+      successUpload(responses);
+    } catch (error) {
+      addToast('error');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const removeFile = (file, files) => files.filter((f) => f !== file);
 
@@ -35,10 +61,17 @@ export default function Volunteers() {
     setIsModalOpen(true);
   };
 
-  const deleteItem = () => {
+  const deleteItem = async () => {
     // logic to erase file here
-    console.log(deleteStaging);
-    setIsModalOpen(false);
+    try {
+      const response = await deleteReport(deleteStaging);
+      // in case of successfully deleting the report
+      setDeleteStaging(null);
+      setFileList(fileList.filter((f) => f.id != deleteStaging));
+      setIsModalOpen(false);
+    } catch (error) {
+      addToast('error');
+    }
   };
 
   const fileSize = (size) => {
@@ -49,17 +82,14 @@ export default function Volunteers() {
     return `${parseFloat((size / k ** i).toFixed(2))} ${sizes[i]}`;
   };
 
-  async function getFiles() {
+  const getFiles = async () => {
     try {
-      setFileList([
-        { id: 1, name: 'a', url: 'https' },
-        { id: 2, name: 'b', url: 'https' },
-        { id: 3, name: 'c.jpeg', url: 'https' }
-      ]);
+      const files = await fetchReports();
+      setFileList(files);
     } catch (error) {
       addToast('error');
     }
-  }
+  };
 
   useEffect(() => {
     getFiles();
@@ -100,7 +130,7 @@ export default function Volunteers() {
                   <p>Arraste o arquivo ou</p>
                   <p className="font-semibold">Clique Aqui</p>
                 </div>
-                <p className="text-xs text-gray-500">Imagens, PDFs</p>
+                <p className="text-xs text-gray-500">Apenas PDFs</p>
             </div>
             <input {...getInputProps()} />
           </div>
@@ -123,7 +153,8 @@ export default function Volunteers() {
           <button
             className="py-4 px-24 w-full bg-dark-blue text-base font-bold rounded-full hover:bg-blue-500 disabled:bg-light-grey disabled:text-medium-grey disable:cursor-not-allowed"
             type="button"
-            disabled={selectedFiles.length === 0}
+            onClick={handleSubmit}
+            disabled={selectedFiles.length === 0 || isUploading}
           >
             Enviar
           </button>
@@ -147,9 +178,9 @@ export default function Volunteers() {
                   <td>{item.name}</td>
                   <td>
                     <div className="flex items-center justify-center gap-2">
-                      <button title="Baixar arquivo" type="button">
+                      <a title="Baixar arquivo" download href={item.url}>
                         <img src={downloadIcon} alt="Ícone de página com conteúdo escrito" />
-                      </button>
+                      </a>
                       <button type="button" title="Apagar arquivo" onClick={() => prepareToDelete(item.id)}>
                         <img src={trashIcon} alt="Ícone de lixeira" />
                       </button>
