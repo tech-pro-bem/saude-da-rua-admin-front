@@ -2,7 +2,8 @@ import axiosInstance from '../axiosInstance';
 import makeBase64 from '../../utils/base64';
 
 async function fetchReports() {
-  const { data } = await axiosInstance.get('/file/PDF');
+  const params = { limit: 100 };
+  const { data } = await axiosInstance.get('/file/PDF', { params });
   return data;
 }
 

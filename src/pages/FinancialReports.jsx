@@ -27,26 +27,42 @@ export default function FinancialReports() {
   const { getRootProps, getInputProps } = useDropzone({
     accept: { 'application/pdf': ['.pdf'] },
     maxFiles: 20,
+    maxSize: 4194304, // 4 MB
     onDrop: (acceptedFiles) => {
       setSelectedFiles([...selectedFiles, ...acceptedFiles]);
     }
   });
 
-  const successUpload = (responses) => {
+  const formattedDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formatted = `${day}/${month}/${year}`;
+    return formatted;
+  };
+
+  const getFiles = async () => {
+    try {
+      const files = await fetchReports();
+      setFileList(files);
+    } catch (error) {
+      addToast('error');
+    }
+  };
+
+  const successUpload = async () => {
     setSelectedFiles([]);
     addToast('success');
-    const newFiles = responses
-      .map((response) => response.data)
-      .reduce((prev, curr) => prev.concat(curr), []);
-    setFileList(...newFiles, ...fileList);
+    await getFiles();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsUploading(true);
     try {
-      const responses = await uploadReports(selectedFiles);
-      successUpload(responses);
+      await uploadReports(selectedFiles);
+      successUpload();
     } catch (error) {
       addToast('error');
     } finally {
@@ -64,7 +80,7 @@ export default function FinancialReports() {
   const deleteItem = async () => {
     // logic to erase file here
     try {
-      const response = await deleteReport(deleteStaging);
+      await deleteReport(deleteStaging);
       // in case of successfully deleting the report
       setDeleteStaging(null);
       setFileList(fileList.filter((f) => f.id != deleteStaging));
@@ -80,15 +96,6 @@ export default function FinancialReports() {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(size) / Math.log(k));
     return `${parseFloat((size / k ** i).toFixed(2))} ${sizes[i]}`;
-  };
-
-  const getFiles = async () => {
-    try {
-      const files = await fetchReports();
-      setFileList(files);
-    } catch (error) {
-      addToast('error');
-    }
   };
 
   useEffect(() => {
@@ -131,6 +138,7 @@ export default function FinancialReports() {
                   <p className="font-semibold">Clique Aqui</p>
                 </div>
                 <p className="text-xs text-gray-500">Apenas PDFs</p>
+                <p className="text-xs text-gray-500">Limite de 4 MB</p>
             </div>
             <input {...getInputProps()} />
           </div>
@@ -165,6 +173,9 @@ export default function FinancialReports() {
             <thead>
               <tr>
                 <td className="bg-dark-blue text-ultra-light-grey font-semibold">
+                  Data de envio
+                </td>
+                <td className="bg-dark-blue text-ultra-light-grey font-semibold">
                   Arquivo
                 </td>
                 <td className="text-center bg-dark-blue text-ultra-light-grey font-semibold">
@@ -175,10 +186,11 @@ export default function FinancialReports() {
             <tbody>
               {fileList.map((item, index) => (
                 <tr key={item.id} className={`h-16 ${index % 2 === 0 ? 'bg-base' : 'bg-light-grey'}`}>
+                  <td>{formattedDate(item.createdAt)}</td>
                   <td>{item.name}</td>
                   <td>
                     <div className="flex items-center justify-center gap-2">
-                      <a title="Baixar arquivo" download href={item.url}>
+                      <a title="Baixar arquivo" href={item.url}>
                         <img src={downloadIcon} alt="Ícone de página com conteúdo escrito" />
                       </a>
                       <button type="button" title="Apagar arquivo" onClick={() => prepareToDelete(item.id)}>
