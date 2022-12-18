@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axiosInstance from '../../service/axiosInstance';
 import homepageImage from '../../assets/homepage.png';
-
 import { useToast } from '../../contexts/toastContext';
 import ToastContainer from '../Toast/ToastContainer';
 
@@ -33,8 +33,20 @@ function MainHome() {
           Boas-vindas! Este é o painel de gestão do site do Saúde da Rua.
         </p>
         <p className="font-normal text-lg leading-[27px] text-gray-900 mb-6 max-w-[1122px]">
-          Aqui você pode consultar a Planilha de Voluntários e os Relatórios Financeiros,
-          além de editar o seu perfil e definir os usuários com permissão para editar o site.
+          Aqui você pode consultar a
+          {' '}
+          <Link to="/voluntarios"><strong>Planilha de Voluntários</strong></Link>
+          , doações de
+          {' '}
+          <Link to="/medicamentos"><strong>Medicamentos</strong></Link>
+          , gerenciar os
+          {' '}
+          <Link to="/relatorios"><strong>Relatórios Financeiros</strong></Link>
+          {' '}
+          e alterar a
+          {' '}
+          <Link to="/chave-pix"><strong>Chave Pix</strong></Link>
+          .
         </p>
         <figure className="flex flex-col items-end gap-y-2">
           <img
