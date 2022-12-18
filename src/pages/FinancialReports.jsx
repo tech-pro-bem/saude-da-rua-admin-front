@@ -9,11 +9,12 @@ import Modal from '../components/Modal';
 import ToastContainer from '../components/Toast/ToastContainer';
 import { useToast } from '../contexts/toastContext';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
+import { fetchReports, uploadReports, deleteReport } from '../service/apiRequests/reports';
 import trashIcon from '../assets/trash.svg';
 import downloadIcon from '../assets/download.svg';
 import fileIcon from '../assets/file.svg';
 import closeIcon from '../assets/close_red.svg';
-import { fetchReports, uploadReports, deleteReport } from '../service/apiRequests/reports';
+import ghostImg from '../assets/ghost.svg';
 
 export default function FinancialReports() {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -167,41 +168,52 @@ export default function FinancialReports() {
             Enviar
           </button>
         </div>
+
         <div className="mt-12">
           <h2 className="font-semibold text-[28px] leading-[48px] text-dark-blue">Base de Relatórios</h2>
-          <table className="w-full shadow-lg">
-            <thead>
-              <tr>
-                <td className="bg-dark-blue text-ultra-light-grey font-semibold">
-                  Data de envio
-                </td>
-                <td className="bg-dark-blue text-ultra-light-grey font-semibold">
-                  Arquivo
-                </td>
-                <td className="text-center bg-dark-blue text-ultra-light-grey font-semibold">
-                  Ações
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {fileList.map((item, index) => (
-                <tr key={item.id} className={`h-16 ${index % 2 === 0 ? 'bg-base' : 'bg-light-grey'}`}>
-                  <td>{formattedDate(item.createdAt)}</td>
-                  <td>{item.name}</td>
-                  <td>
-                    <div className="flex items-center justify-center gap-2">
-                      <a title="Baixar arquivo" href={item.url} download target="_blank" rel="noreferrer">
-                        <img src={downloadIcon} alt="Ícone de página com conteúdo escrito" />
-                      </a>
-                      <button type="button" title="Apagar arquivo" onClick={() => prepareToDelete(item.id)}>
-                        <img src={trashIcon} alt="Ícone de lixeira" />
-                      </button>
-                    </div>
+
+          {!(fileList.length > 0) ? (
+            <div className="flex flex-col items-center">
+              <img src={ghostImg} alt="Ilustração de um fantasma" />
+              <span className="mt-[32px] font-medium text-[22px] leading-[33px]">
+                Nenhum Relatório...
+              </span>
+            </div>
+          ) : (
+            <table className="w-full shadow-lg">
+              <thead>
+                <tr>
+                  <td className="bg-dark-blue text-ultra-light-grey font-semibold">
+                    Data de envio
+                  </td>
+                  <td className="bg-dark-blue text-ultra-light-grey font-semibold">
+                    Arquivo
+                  </td>
+                  <td className="text-center bg-dark-blue text-ultra-light-grey font-semibold">
+                    Ações
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {fileList.map((item, index) => (
+                  <tr key={item.id} className={`h-16 ${index % 2 === 0 ? 'bg-base' : 'bg-light-grey'}`}>
+                    <td>{formattedDate(item.createdAt)}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      <div className="flex items-center justify-center gap-2">
+                        <a title="Baixar arquivo" href={item.url} download target="_blank" rel="noreferrer">
+                          <img src={downloadIcon} alt="Ícone de página com conteúdo escrito" />
+                        </a>
+                        <button type="button" title="Apagar arquivo" onClick={() => prepareToDelete(item.id)}>
+                          <img src={trashIcon} alt="Ícone de lixeira" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </main>
       <Modal
