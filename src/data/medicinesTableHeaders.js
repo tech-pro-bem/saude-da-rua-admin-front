@@ -1,5 +1,8 @@
 export default [
   {
+    title: 'Status',
+  },
+  {
     title: 'Nome',
   },
   {

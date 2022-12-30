@@ -89,7 +89,6 @@ export default function Medicines() {
                       medicine={medicine}
                       openModal={openModal}
                       setMedicineToBeDeleted={setMedicineToBeDeleted}
-
                     />
                   </tr>
                 ))}
