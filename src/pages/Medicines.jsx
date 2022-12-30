@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-no-bind */
 import React, { useState, useEffect } from 'react';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout';
@@ -7,13 +8,28 @@ import Medicine from '../components/Medicine';
 import Modal from '../components/Modal';
 import { fetchMedicines, deleteMedicine } from '../service/apiRequests/medicines';
 import { useToast } from '../contexts/toastContext';
+import ToastContainer from '../components/Toast/ToastContainer';
 
 export default function Medicines() {
   const [medicines, setMedicines] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicineToBeDeleted, setMedicineToBeDeleted] = useState({});
+  const [viewFilter, setViewFilter] = useState('unread');
 
   const { addToast } = useToast();
+
+  const viewMode = (view, medicine) => {
+    switch (view) {
+      case 'read':
+        return medicine?.wasRead;
+
+      case 'unread':
+        return !medicine?.wasRead;
+
+      default:
+        return true;
+    }
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -58,6 +74,20 @@ export default function Medicines() {
           Medicamentos
         </h1>
         <span className="leading-6 text-primary-black">Consulte os medicamentos em estoque, doados através do formulário fixado no site.</span>
+        <div className="mt-8">
+          <label htmlFor="view" className="font-medium text-lg">Exibir:</label>
+          <select
+            name="view"
+            id="view"
+            defaultValue={viewFilter}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block cursor-pointer p-2"
+            onChange={(e) => setViewFilter(e.target.value)}
+          >
+            <option value="all">Todos</option>
+            <option value="unread">Apenas não lidos</option>
+            <option value="read">Apenas lidos</option>
+          </select>
+        </div>
 
         {!medicines.length ? (
           <div className="mt-[134px] flex flex-col items-center">
@@ -82,16 +112,18 @@ export default function Medicines() {
                 </tr>
               </thead>
               <tbody>
-                {medicines.map((medicine, index) => (
-                  <tr key={medicine.id} className={`h-20 ${index % 2 === 0 ? 'bg-base' : 'bg-light-grey'}`}>
-                    <Medicine
-                      key={medicine.id}
-                      medicine={medicine}
-                      openModal={openModal}
-                      setMedicineToBeDeleted={setMedicineToBeDeleted}
-                    />
-                  </tr>
-                ))}
+                {medicines
+                  .filter((medicine) => viewMode(viewFilter, medicine))
+                  .map((medicine, index) => (
+                    <tr key={medicine.id} className={`h-20 ${index % 2 === 0 ? 'bg-base' : 'bg-light-grey'}`}>
+                      <Medicine
+                        key={medicine.id}
+                        medicine={medicine}
+                        openModal={openModal}
+                        setMedicineToBeDeleted={setMedicineToBeDeleted}
+                      />
+                    </tr>
+                  ))}
               </tbody>
             </table>
 
@@ -108,6 +140,7 @@ export default function Medicines() {
       >
         <span>Deseja mesmo realizar essa exclusão?</span>
       </Modal>
+      <ToastContainer />
     </AuthenticatedLayout>
   );
 }

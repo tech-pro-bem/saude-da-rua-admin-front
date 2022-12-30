@@ -10,7 +10,6 @@ import { useToast } from '../../contexts/toastContext';
 import { usePermissions } from '../../contexts/permissionsContext';
 import { ADMIN_MASTER } from '../../data/permissions';
 import formatExpirationDate from '../../utils/formatExpirationDate';
-import ToastContainer from '../Toast/ToastContainer';
 
 export default function Medicine({
   medicine,
@@ -63,7 +62,6 @@ export default function Medicine({
           </button>
         </div>
       </td>
-      <ToastContainer />
     </>
   );
 }
