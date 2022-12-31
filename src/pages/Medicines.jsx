@@ -73,7 +73,7 @@ export default function Medicines() {
         <h1 className="font-semibold text-[32px] leading-[48px] text-dark-blue">
           Medicamentos
         </h1>
-        <span className="leading-6 text-primary-black">Consulte os medicamentos em estoque, doados através do formulário fixado no site.</span>
+        <span className="leading-6 text-primary-black">Doações de medicamentos registradas pelo site.</span>
         <div className="mt-8">
           <label htmlFor="view" className="font-medium text-lg">Exibir:</label>
           <select
