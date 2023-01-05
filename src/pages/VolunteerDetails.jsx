@@ -148,6 +148,7 @@ function VolunteerDetails() {
                 Curso:
                 <span className="font-normal text-primary-black">
                   {' '}
+                  {volunteerData.course}
                 </span>
               </span>
               <span className="font-semibold text-primary-black">
