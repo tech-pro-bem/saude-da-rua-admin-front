@@ -109,7 +109,7 @@ function VolunteerDetails() {
                 Data de nascimento:
                 <span className="font-normal text-primary-black">
                   {' '}
-                  {formatInTimeZone(new Date(volunteerData.birthdate), 'America/Sao_Paulo', 'dd/MM/yyyy')}
+                  {formatInTimeZone(new Date(volunteerData.birthdate), 'UTC', 'dd/MM/yyyy')}
                 </span>
               </span>
             </div>
